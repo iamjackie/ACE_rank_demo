@@ -1,0 +1,29 @@
+# ============ 开发工具链(不公开) ============
+.claude/
+.codebuddy/
+.git/
+
+# ============ 开发文档与过程记录(不公开) ============
+docs/
+CLAUDE.md
+CODEBUDDY.md
+
+# ============ 调试与中间产物 ============
+.playwright-cli/
+dist/
+*.zip
+.DS_Store
+
+# ============ 原始数据(已合并进 data/rank.js) ============
+data/赛事积分/
+data/rank.json
+
+# ============ 旧资源与多余产物 ============
+assets/avatars/
+assets/medals/
+assets/logo/
+assets/full/avatar_list.png
+*.pdf
+
+# ============ 其他 ============
+*.log
