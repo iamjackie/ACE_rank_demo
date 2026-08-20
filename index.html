@@ -146,6 +146,203 @@
     .toast.is-show { opacity: 1; }
 
     /* ============================================================
+     * 积分规则触发按钮（副标题右侧，参考 Figma「点击副标题右侧弹出规则弹窗」）
+     * ============================================================ */
+    .rules-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      margin-left: 16px;
+      padding: 5px 16px;
+      border: 1px solid rgba(222, 248, 254, 0.8);
+      border-radius: 999px;
+      background: linear-gradient(90deg, #41507b 0%, #758abf 100%);
+      color: #ffffff;
+      font-family: var(--font-cn);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      cursor: pointer;
+    }
+    .rules-trigger:hover { filter: brightness(1.12); }
+    .rules-trigger svg { display: block; width: 14px; height: 14px; }
+
+    /* ============================================================
+     * 积分规则弹窗（样式还原 Figma 节点 29:5172「申请认证赛事」弹窗）
+     *   蒙层 rgba(13,21,54,.85) · 弹窗 640 宽圆角 6px 浅蓝紫渐变
+     *   标题 EN(DIN 16 #515e85) + CN(20 w600 #0b1439) · 分割线 150x4 渐变条+1px 线
+     *   关闭按钮 20x20 白底 · 按钮 138x40 横向渐变 #41507b→#758abf 描边 #def8fe
+     * ============================================================ */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal.is-open { display: flex; }
+    .modal__mask {
+      position: absolute;
+      inset: 0;
+      background: rgba(13, 21, 54, 0.85);
+    }
+    .modal__dialog {
+      position: relative;
+      width: 640px;
+      max-width: 100%;
+      max-height: calc(100vh - 40px);
+      display: flex;
+      flex-direction: column;
+      border-radius: 6px;
+      /* 背景按导出 PNG 取样还原: 顶部偏亮 + 左上角高光椭圆(#dfe6ff) */
+      background:
+        radial-gradient(circle at 90px 40px, rgba(223, 230, 255, 0.85) 0%, rgba(223, 230, 255, 0) 220px),
+        linear-gradient(180deg, #9bb3e8 0%, #a8bceb 50%, #c9d6f2 100%);
+      box-shadow: 0 12px 48px rgba(11, 20, 57, 0.35);
+      overflow: hidden;
+    }
+    .modal__close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: #ffffff;
+      cursor: pointer;
+    }
+    .modal__close:hover { background: #eef2ff; }
+    .modal__close svg { display: block; }
+    .modal__head { padding: 20px 48px 0 20px; }
+    .modal__head-en {
+      display: block;
+      font-family: var(--font-num);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 19px;
+      letter-spacing: 1px;
+      color: #515e85;
+    }
+    .modal__head-cn {
+      margin: 2px 0 0;
+      font-family: var(--font-cn);
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 28px;
+      color: #0b1439;
+    }
+    /* 分割线: 150x4 渐变条 + 余下 1px 细线(Figma y=75) */
+    .modal__divider { position: relative; height: 5px; margin-top: 8px; flex-shrink: 0; }
+    .modal__divider::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 150px; height: 4px;
+      background: linear-gradient(90deg, #3d4f80 0%, #6c81ce 100%);
+    }
+    .modal__divider::after {
+      content: '';
+      position: absolute;
+      left: 150px; top: 3px;
+      right: 0; height: 1px;
+      background: linear-gradient(90deg, #596cae 0%, #8b99cd 100%);
+    }
+    .modal__body {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 20px 40px 8px;
+    }
+    .modal__intro {
+      margin: 0 0 14px;
+      font-family: var(--font-cn);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 26px;
+      color: #0b1439;
+    }
+    .modal__table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    .modal__table th {
+      height: 40px;
+      background: rgba(11, 20, 57, 0.88);
+      font-family: var(--font-cn);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      color: #ffffff;
+      text-align: center;
+    }
+    .modal__table th:first-child { border-radius: 6px 0 0 6px; }
+    .modal__table th:last-child { border-radius: 0 6px 6px 0; }
+    .modal__table td {
+      height: 38px;
+      background: rgba(255, 255, 255, 0.5);
+      font-family: var(--font-cn);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      color: #0b1439;
+      text-align: center;
+    }
+    .modal__table td:first-child { border-radius: 6px 0 0 6px; }
+    .modal__table td:last-child { border-radius: 0 6px 6px 0; }
+    .modal__table .modal__pts {
+      font-family: var(--font-num);
+      font-size: 18px;
+      font-weight: 700;
+      color: #405390;
+    }
+    .modal__note {
+      margin: 10px 0 0;
+      font-family: var(--font-cn);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 20px;
+      color: #515e85;
+    }
+    .modal__outro {
+      margin: 14px 0 0;
+      font-family: var(--font-cn);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 26px;
+      color: #0b1439;
+    }
+    .modal__foot {
+      display: flex;
+      justify-content: center;
+      padding: 16px 40px 24px;
+      flex-shrink: 0;
+    }
+    .modal__btn {
+      min-width: 138px;
+      height: 40px;
+      padding: 0 24px;
+      border: 1px solid #def8fe;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #41507b 0%, #758abf 100%);
+      color: #ffffff;
+      font-family: var(--font-cn);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+      cursor: pointer;
+    }
+    .modal__btn:hover { filter: brightness(1.12); }
+
+    /* ============================================================
      * 标题区 (title group, frame内 x=-43 y=129 w=1440 h=218)
      * 子元素坐标均为 frame 内绝对坐标
      * ============================================================ */
@@ -449,6 +646,13 @@
         white-space: normal;
         margin: 0 0 16px;
       }
+      .rules-trigger { margin-left: 8px; padding: 4px 14px; font-size: 13px; }
+
+      /* —— 弹窗(iPad):略收内边距 —— */
+      .modal { padding: 16px; }
+      .modal__dialog { max-height: calc(100vh - 32px); }
+      .modal__body { padding: 18px 28px 6px; }
+      .modal__foot { padding: 14px 28px 20px; }
 
       /* —— 奖牌 flex 列堆叠(复用手机块结构,间距略大) —— */
       .podium {
@@ -655,6 +859,20 @@
         margin: 0 0 12px;
         order: 3;
       }
+      .rules-trigger { margin-left: 8px; padding: 3px 12px; font-size: 12px; line-height: 18px; }
+
+      /* —— 弹窗(手机):紧凑排版,表格缩小 —— */
+      .modal { padding: 12px; }
+      .modal__dialog { max-height: calc(100vh - 24px); }
+      .modal__body { padding: 16px 18px 4px; }
+      .modal__intro { font-size: 14px; line-height: 24px; }
+      .modal__table th { height: 36px; font-size: 13px; }
+      .modal__table td { height: 34px; font-size: 13px; }
+      .modal__table .modal__pts { font-size: 16px; }
+      .modal__note { font-size: 11px; line-height: 18px; }
+      .modal__outro { font-size: 14px; line-height: 24px; }
+      .modal__foot { padding: 12px 18px 18px; }
+      .modal__btn { min-width: 120px; height: 36px; font-size: 14px; }
 
       /* —— 奖牌 flex 列堆叠 —— */
       .podium {
@@ -798,6 +1016,12 @@
     <img class="title__spark" src="assets/full/decor_vector.png" alt="" aria-hidden="true">
     <p class="title__sub">
       当前为测试和体验期间抢先榜单，正式发布后将重置。后续人人都可登上排名，冲击最高舞台！
+      <button class="rules-trigger" id="rules-trigger" type="button" aria-haspopup="dialog">
+        <svg viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8.534 0.900879C9.588 0.900879 10.5768 1.10205 11.5005 1.50438C12.4242 1.90671 13.2317 2.45071 13.923 3.13638C14.6143 3.82205 15.1583 4.62671 15.555 5.55038C15.9517 6.47405 16.15 7.46288 16.15 8.51688C16.15 9.57088 15.9517 10.5569 15.555 11.4749C15.1583 12.3929 14.6143 13.1975 13.923 13.8889C13.2317 14.5802 12.4242 15.1242 11.5005 15.5209C10.5768 15.9175 9.588 16.1159 8.534 16.1159C7.48 16.1159 6.494 15.9175 5.576 15.5209C4.658 15.1242 3.85333 14.5802 3.162 13.8889C2.47066 13.1975 1.92666 12.3929 1.53 11.4749C1.13333 10.5569 0.934998 9.57088 0.934998 8.51688C0.934998 7.46288 1.13333 6.47405 1.53 5.55038C1.92666 4.62671 2.47066 3.82205 3.162 3.13638C3.85333 2.45071 4.658 1.90671 5.576 1.50438C6.494 1.10205 7.48 0.900879 8.534 0.900879ZM8.551 13.7189C8.84566 13.7189 9.09216 13.6197 9.2905 13.4214C9.48883 13.223 9.588 12.9822 9.588 12.6989C9.588 12.4042 9.48883 12.1577 9.2905 11.9594C9.09216 11.761 8.84566 11.6619 8.551 11.6619C8.25633 11.6619 8.00983 11.761 7.8115 11.9594C7.61316 12.1577 7.514 12.4042 7.514 12.6989C7.514 12.9822 7.61316 13.223 7.8115 13.4214C8.00983 13.6197 8.25633 13.7189 8.551 13.7189ZM9.418 9.53688C9.40666 9.35555 9.52 9.16288 9.758 8.95888C9.996 8.75488 10.2623 8.52821 10.557 8.27888C10.8517 8.02955 11.1237 7.74905 11.373 7.43738C11.6223 7.12571 11.7583 6.76588 11.781 6.35788C11.8037 5.91588 11.7583 5.50221 11.645 5.11688C11.5317 4.73155 11.3447 4.40005 11.084 4.12238C10.8233 3.84471 10.4862 3.62371 10.0725 3.45938C9.65883 3.29505 9.17433 3.21288 8.619 3.21288C7.92766 3.21288 7.3525 3.33471 6.8935 3.57838C6.4345 3.82205 6.06333 4.11671 5.78 4.46238C5.49666 4.80805 5.29833 5.16505 5.185 5.53338C5.07166 5.90171 5.02066 6.21055 5.032 6.45988C5.04333 6.75455 5.13683 6.96988 5.3125 7.10588C5.48816 7.24188 5.678 7.31271 5.882 7.31838C6.086 7.32405 6.273 7.26738 6.443 7.14838C6.613 7.02938 6.698 6.85655 6.698 6.62988C6.698 6.49388 6.7405 6.32671 6.8255 6.12838C6.9105 5.93005 7.02666 5.74021 7.174 5.55888C7.32133 5.37755 7.49983 5.22455 7.7095 5.09988C7.91916 4.97521 8.15433 4.91288 8.415 4.91288C8.925 4.91288 9.333 5.04038 9.639 5.29538C9.945 5.55038 10.0867 5.87055 10.064 6.25588C10.064 6.44855 10.0073 6.62705 9.894 6.79138C9.78066 6.95571 9.63616 7.11438 9.4605 7.26738C9.28483 7.42038 9.09783 7.57338 8.8995 7.72638C8.70116 7.87938 8.51416 8.03805 8.3385 8.20238C8.16283 8.36671 8.0155 8.54521 7.8965 8.73788C7.7775 8.93055 7.71233 9.14021 7.701 9.36688L7.718 10.0129C7.718 10.1829 7.79733 10.3444 7.956 10.4974C8.11466 10.6504 8.32433 10.7325 8.585 10.7439C8.84566 10.7325 9.0525 10.6475 9.2055 10.4889C9.3585 10.3302 9.42933 10.1489 9.418 9.94488V9.53688Z" fill="#ffffff"/>
+        </svg>
+        积分规则
+      </button>
     </p>
 
     <!-- 奖牌区 -->
@@ -836,6 +1060,52 @@
       <div id="rank-body"></div>
     </section>
   </div>
+    </div>
+  </div>
+
+  <!-- 积分规则弹窗（样式还原 Figma 29:5172） -->
+  <div class="modal" id="rules-modal">
+    <div class="modal__mask"></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="rules-title">
+      <button class="modal__close" id="rules-close" type="button" aria-label="关闭弹窗">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M1 1L13 13M13 1L1 13" stroke="#3c3c3c" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="modal__head">
+        <span class="modal__head-en">SCORING RULES</span>
+        <h2 class="modal__head-cn" id="rules-title">积分规则</h2>
+      </div>
+      <div class="modal__divider"></div>
+      <div class="modal__body">
+        <p class="modal__intro">当前排行榜为王者万象棋正式上线前的抢先版本，收录了万象联合创始人邀请赛、万象终测杯、万象社群赛等赛事积分，积分规则如下表：</p>
+        <table class="modal__table">
+          <thead>
+            <tr>
+              <th>名次</th>
+              <th>大型赛事</th>
+              <th>社群月赛</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>第1名</td><td><span class="modal__pts">150</span></td><td><span class="modal__pts">30</span></td></tr>
+            <tr><td>第2名</td><td><span class="modal__pts">90</span></td><td><span class="modal__pts">21</span></td></tr>
+            <tr><td>第3名</td><td><span class="modal__pts">60</span></td><td><span class="modal__pts">15</span></td></tr>
+            <tr><td>第4名</td><td><span class="modal__pts">45</span></td><td><span class="modal__pts">9</span></td></tr>
+            <tr><td>第5名</td><td><span class="modal__pts">38</span></td><td><span class="modal__pts">6</span></td></tr>
+            <tr><td>第6名</td><td><span class="modal__pts">33</span></td><td><span class="modal__pts">3</span></td></tr>
+            <tr><td>第7-12名</td><td><span class="modal__pts">30</span></td><td><span class="modal__pts">2</span></td></tr>
+            <tr><td>第13-24名</td><td><span class="modal__pts">15</span></td><td><span class="modal__pts">1</span></td></tr>
+            <tr><td>第25-48名</td><td><span class="modal__pts">8</span></td><td>—</td></tr>
+            <tr><td>第49名及以后</td><td><span class="modal__pts">4</span></td><td>—</td></tr>
+          </tbody>
+        </table>
+        <p class="modal__note">注：大型赛事含万象联合创始人邀请赛、万象终测杯（大众赛道／主播赛道）；社群月赛含万象社群5月月赛、万象社群7月月赛。</p>
+        <p class="modal__outro">万象棋正式上线后，本榜单将重置。后续人人都可登上排名，冲击最高舞台！</p>
+      </div>
+      <div class="modal__foot">
+        <button class="modal__btn" id="rules-btn-close" type="button">我知道了</button>
+      </div>
     </div>
   </div>
 
@@ -993,6 +1263,33 @@
       renderPodium(data.top3 || []);
       render(data.list || []);
     }
+
+    // 积分规则弹窗: 打开/关闭(触发按钮 · X · 我知道了 · 蒙层点击 · Esc)
+    (function () {
+      var modal = document.getElementById('rules-modal');
+      var trigger = document.getElementById('rules-trigger');
+      var closeBtn = document.getElementById('rules-close');
+      var okBtn = document.getElementById('rules-btn-close');
+      if (!modal || !trigger) return;
+
+      function openModal() {
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        if (closeBtn) closeBtn.focus();
+      }
+      function closeModal() {
+        modal.classList.remove('is-open');
+        document.body.style.overflow = '';
+        trigger.focus();
+      }
+      trigger.addEventListener('click', openModal);
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (okBtn) okBtn.addEventListener('click', closeModal);
+      modal.querySelector('.modal__mask').addEventListener('click', closeModal);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+    })();
 
     boot();
   </script>
