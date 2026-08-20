@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>万象电竞 · 世界排行榜</title>
+  <title>万象王牌 · 世界排行榜</title>
   <!-- Google Fonts: 免费近似字形,优先加载,失败则降级 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -311,7 +311,7 @@
     /* 行内文字(frame内相对 .rank 起点 300, 行内 top 相对行起点) */
     .rank__cell-rank   { position: absolute; left: 64px;  top: 21px; }
     .rank__cell-player { position: absolute; left: 325px; top: 12px; width: 240px; height: 48px; display: flex; align-items: center; gap: 8px; }
-    .rank__cell-event  { position: absolute; left: 794px; top: 25px; }
+    .rank__cell-event  { position: absolute; left: 794px; top: 25px; width: 420px; overflow: hidden; }
     .rank__cell-score  { position: absolute; left: 1223px; top: 26px; }
 
     .rank__thead span {
@@ -344,6 +344,10 @@
       font-size: 16px; font-weight: 400;
       color: var(--c-table-text);
       line-height: 22px;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .rank__score {
       font-family: var(--font-num);
@@ -789,7 +793,7 @@
 
     <!-- 标题区 -->
     <img class="title__watermark" src="assets/full/watermark_paihang.png" alt="" aria-hidden="true">
-    <h1 class="title__main">万象电竞·世界排行榜</h1>
+    <h1 class="title__main">万象王牌·世界排行榜</h1>
     <span class="title__decor" aria-hidden="true">Pai Hang</span>
     <img class="title__spark" src="assets/full/decor_vector.png" alt="" aria-hidden="true">
     <p class="title__sub">
