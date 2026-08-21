@@ -4,15 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>万象王牌 · 世界排行榜</title>
-  <!-- Google Fonts: 免费近似字形,优先加载,失败则降级 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&family=Inter:wght@400;600;700&family=Dancing+Script:wght@700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <!-- 本地自托管字体(OFL 1.1 免费商用,许可证见 assets/fonts/OFL-LICENSES.txt);预加载 CJK 主字体 -->
+  <link rel="preload" href="assets/fonts/notosanssc-var.woff2" as="font" type="font/woff2" crossorigin>
   <style>
+    /* ============================================================
+     * 本地字体 @font-face —— 原 Google Fonts 外链改为自托管:
+     *   Noto Sans SC 按页面字符集子集化(可变字重 100-900,~425KB)
+     *   Inter 可变字重 latin 切片;Dancing Script 700 / Bebas Neue 400 静态 latin 切片
+     * ============================================================ */
+    @font-face {
+      font-family: 'Noto Sans SC';
+      src: url('assets/fonts/notosanssc-var.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter';
+      src: url('assets/fonts/inter-var.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Dancing Script';
+      src: url('assets/fonts/dancingscript-700.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Bebas Neue';
+      src: url('assets/fonts/bebasneue-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
     /* ============================================================
      * 设计 Token —— 全部来自 Figma frame 29:957 节点实测值
      * 坐标均为 frame 内坐标(frame 左上角为 0,0)
-     * 字体策略: Figma 商用字体 → Google Fonts 免费近似
+     * 字体策略: Figma 商用字体 → 本地 OFL 免费近似(assets/fonts/ 自托管子集)
      *   MF FangHei (Noncommercial) → Noto Sans SC
      *   Kalista Script → Dancing Script
      *   DIN Next LT Pro → Bebas Neue
