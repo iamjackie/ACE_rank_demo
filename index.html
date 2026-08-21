@@ -339,6 +339,35 @@
     .modal__btn:hover { filter: brightness(1.12); }
 
     /* ============================================================
+     * 回到顶部按钮(还原 Figma 29:1536「置顶」组件)
+     *   48x48 方形 · 纵向渐变 #90a3d5→#7187bd · 白色 ⌃+下划线 图标
+     *   桌面端水平位置与表格列右缘对齐(画布 x=1640,由 fitStage 动态计算)
+     * ============================================================ */
+    .backtop {
+      position: fixed;
+      right: 28px;              /* ≥1280 由 fitStage 按 canvas 缩放动态覆盖 */
+      bottom: 40px;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: none;
+      background: linear-gradient(180deg, #90a3d5 0%, #7187bd 100%);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 4px 5px rgba(0, 0, 0, 0.05), 0 1px 10px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(12px);
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+      z-index: 900;
+    }
+    .backtop.is-show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .backtop:hover { filter: brightness(1.08); }
+    .backtop svg { display: block; width: 46%; height: 46%; }
+
+    /* ============================================================
      * 标题区 (title group, frame内 x=-43 y=129 w=1440 h=218)
      * 子元素坐标均为 frame 内绝对坐标
      * ============================================================ */
@@ -650,6 +679,9 @@
       .modal__body { padding: 18px 28px 6px; }
       .modal__foot { padding: 14px 28px 20px; }
 
+      /* —— 回到顶部(iPad) —— */
+      .backtop { right: 20px; bottom: 32px; width: 44px; height: 44px; }
+
       /* —— 奖牌 flex 列堆叠(复用手机块结构,间距略大) —— */
       .podium {
         position: relative;
@@ -869,6 +901,9 @@
       .modal__outro { font-size: 14px; line-height: 24px; }
       .modal__foot { padding: 12px 18px 18px; }
       .modal__btn { min-width: 120px; height: 36px; font-size: 14px; }
+
+      /* —— 回到顶部(手机) —— */
+      .backtop { right: 16px; bottom: 24px; width: 40px; height: 40px; }
 
       /* —— 奖牌 flex 列堆叠 —— */
       .podium {
@@ -1105,6 +1140,14 @@
     </div>
   </div>
 
+  <!-- 回到顶部(还原 Figma 29:1536) -->
+  <button class="backtop" id="backtop" type="button" aria-label="回到顶部">
+    <svg viewBox="0 0 22 22" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0 15.286L2.594 17.931L11 9.359L19.406 17.931L22 15.286L11 4.069L0 15.286Z"/>
+      <rect x="0" y="18" width="22" height="4"/>
+    </svg>
+  </button>
+
   <!-- Toast 提示 -->
   <div class="toast" id="toast"></div>
 
@@ -1117,6 +1160,7 @@
       var stageInner = document.querySelector('.stage__inner');
       if (!stageInner) return;
       var vw = window.innerWidth;
+      var backtopEl = document.querySelector('.backtop');
       // 响应式断点(1279px)以下不再做 scale 缩放,
       // 否则会覆盖 <1280 断点 CSS 的 !important 规则,
       // 导致 fitStage 持续写入 transform: scale(...) 内联样式,
@@ -1125,6 +1169,7 @@
         stageInner.style.transform = '';
         var stageEl = document.querySelector('.stage');
         if (stageEl) stageEl.style.height = '';
+        if (backtopEl) backtopEl.style.right = '';   // 回落断点 CSS 定位
         return;
       }
       // 桌面(< 1920 仍等比,>= 1920 按 1 渲染)
@@ -1133,6 +1178,11 @@
       var canvasEl = document.querySelector('.canvas');
       if (canvasEl) {
         document.querySelector('.stage').style.height = (canvasEl.offsetHeight * scale) + 'px';
+      }
+      // 回到顶部: 与表格列右缘对齐(画布 x=1640 = 1920-280),
+      // 随画布缩放与居中留白换算为视口 right 偏移
+      if (backtopEl) {
+        backtopEl.style.right = ((vw - 1920 * scale) / 2 + 280 * scale) + 'px';
       }
     }
     window.addEventListener('resize', fitStage);
@@ -1284,6 +1334,27 @@
       modal.querySelector('.modal__mask').addEventListener('click', closeModal);
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+    })();
+
+    // 回到顶部: 下滑超过 600px 出现, 点击平滑回顶(尊重系统减弱动效设置)
+    (function () {
+      var btn = document.getElementById('backtop');
+      if (!btn) return;
+      var ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          btn.classList.toggle('is-show', window.scrollY > 600);
+          ticking = false;
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      btn.addEventListener('click', function () {
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
       });
     })();
 
