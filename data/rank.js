@@ -11,7 +11,7 @@ window.RANK_DATA = {
       "id": "player-1",
       "event": "万象联合创始人邀请赛",
       "score": 180,
-      "avatar": ""
+      "avatar": "assets/full/avatar_xiaoguzhi.jpg"
     },
     {
       "rank": 2,
@@ -19,7 +19,7 @@ window.RANK_DATA = {
       "id": "player-2",
       "event": "万象联合创始人邀请赛",
       "score": 158,
-      "avatar": ""
+      "avatar": "assets/full/avatar_7d.jpg"
     },
     {
       "rank": 2,
@@ -27,7 +27,7 @@ window.RANK_DATA = {
       "id": "player-2",
       "event": "万象联合创始人邀请赛",
       "score": 158,
-      "avatar": ""
+      "avatar": "assets/full/avatar_zhangjiahao.jpg"
     }
   ],
   "list": [
